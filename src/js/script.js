@@ -30,15 +30,9 @@ class TodoList {
           this.newTodo.value = '';
           this.card.classList.replace('hideCard', 'showCard');
           this.span.innerHTML = this.count + ' items left';
-          if (this.all.checked) {
-            this.showAll();
-          }
-          if (this.active.checked) {
-            this.showActive();
-          }
-          if (this.completed.checked) {
-            this.showCompleted();
-          }
+          if (this.all.checked) this.showAll();
+          if (this.active.checked) this.showActive();
+          if (this.completed.checked) this.showCompleted();
         }
       }
     });
@@ -46,15 +40,9 @@ class TodoList {
     // 监听任务被删除、完成、未完成
     this.ul.addEventListener('click', (e) => {
       this.change(e);
-      if (this.all.checked) {
-        this.showAll();
-      }
-      if (this.active.checked) {
-        this.showActive();
-      }
-      if (this.completed.checked) {
-        this.showCompleted();
-      }
+      if (this.all.checked) this.showAll();
+      if (this.active.checked) this.showActive();
+      if (this.completed.checked) this.showCompleted();
     });
 
     // 实现拖拽变换顺序功能
@@ -140,8 +128,8 @@ class TodoList {
 
   // 从本地存储加载数据
   loadFromLocalStorage() {
-    const data = localStorage.getItem('todoList');
-    if (data) {
+    const data = sessionStorage.getItem('todoList');
+    if (data && data !== "[]") {
       this.parsedData = JSON.parse(data);
       this.parsedData.forEach(item => this.addList(item.label));
       this.newTodo.value = '';
@@ -155,7 +143,7 @@ class TodoList {
     const dataToSave = this.arrList.map(item => {
       return { label: item.li.querySelector('label').innerText };
     });
-    localStorage.setItem('todoList', JSON.stringify(dataToSave));
+    sessionStorage.setItem('todoList', JSON.stringify(dataToSave));
   }
 
   addList(val) {
